@@ -1,9 +1,11 @@
 package com.adorastudios.weatherappavito.weather
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,8 +20,17 @@ class WeatherFragment : Fragment() {
             DataSourceImpl()
         )
     }
+    private var listener : IToCityFragment? = null
     private lateinit var adapter7D : WeatherListAdapter
     private lateinit var adapter24H : WeatherListAdapter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (context is IToCityFragment) {
+            listener = context
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +63,20 @@ class WeatherFragment : Fragment() {
         viewModel.weather24H.observe(this.viewLifecycleOwner) {
             adapter24H.submitList(it)
         }
+
+        val location = view.findViewById<LinearLayout>(R.id.locationLayout)
+        location.setOnClickListener {
+            listener?.toCityFragment()
+        }
+    }
+
+    override fun onDetach() {
+        listener = null
+        super.onDetach()
+    }
+
+    interface IToCityFragment {
+        fun toCityFragment()
     }
 
     companion object {

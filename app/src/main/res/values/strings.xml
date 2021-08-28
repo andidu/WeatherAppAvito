@@ -8,4 +8,7 @@
     <string name="number_percentage">%1$.1f%%</string>
     <string name="number_degrees">%1$d°C</string>
     <string name="humidity">Humidity</string>
+    <string name="city_name_or_zip_code">City name or ZIP code</string>
+    <string name="set_city_name">Set city name</string>
+    <string name="set_zip_code">Set zip code</string>
 </resources>
