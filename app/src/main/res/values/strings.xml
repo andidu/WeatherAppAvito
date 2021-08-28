@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">WeatherAppAvito</string>
+    <string name="weather">Weather</string>
+    <string name="hours_24">24 Hours</string>
+    <string name="days_7">7 Days</string>
+    <string name="location">location</string>
+
+    <string name="number_percentage">%1$.1f%%</string>
+    <string name="number_degrees">%1$d°C</string>
+    <string name="humidity">Humidity</string>
 </resources>
