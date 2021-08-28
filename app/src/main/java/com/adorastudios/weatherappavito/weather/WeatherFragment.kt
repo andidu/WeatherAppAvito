@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +18,8 @@ class WeatherFragment : Fragment() {
 
     private val viewModel: WeatherViewModel by viewModels {
         WeatherViewModelFactory(
-            DataSourceImpl()
+            DataSourceImpl(),
+            requireContext()
         )
     }
     private var listener : IToCityFragment? = null
@@ -45,6 +47,12 @@ class WeatherFragment : Fragment() {
 
         val weatherList7D = view.findViewById<RecyclerView>(R.id.recycler7Days)
         val weatherList24H = view.findViewById<RecyclerView>(R.id.recycler24Hours)
+
+        viewModel.repetitiveInit()
+        viewModel.location.observe(this.viewLifecycleOwner) {
+            val text = view.findViewById<TextView>(R.id.textViewLocation)
+            text.text = it
+        }
 
         adapter7D = WeatherListAdapter()
         adapter24H = WeatherListAdapter()

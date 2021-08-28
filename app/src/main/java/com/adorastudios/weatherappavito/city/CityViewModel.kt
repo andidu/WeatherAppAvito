@@ -3,13 +3,14 @@ package com.adorastudios.weatherappavito.city
 import android.content.Context
 import androidx.preference.PreferenceManager
 import androidx.lifecycle.ViewModel
+import com.adorastudios.weatherappavito.R
 
 class CityViewModel (context: Context): ViewModel() {
 
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    private val NAME_STRING = "name"
-    private val ZIP_STRING = "zip"
-
+    private val NAME_STRING = context.getString(R.string.shared_preferences_name)
+    private val ZIP_STRING = context.getString(R.string.shared_preferences_zip)
+    
     fun setZip(zip: String) {
         sharedPreferences.edit()
             .putString(ZIP_STRING, zip)
