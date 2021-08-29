@@ -5,26 +5,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.adorastudios.weatherappavito.R
-import com.adorastudios.weatherappavito.data.DataSourceImpl
+import com.adorastudios.weatherappavito.data.DataSourceProvider
 
 class WeatherFragment : Fragment() {
 
     private val viewModel: WeatherViewModel by viewModels {
         WeatherViewModelFactory(
-            DataSourceImpl(),
+            (requireActivity() as DataSourceProvider).provideDataSource(),
             requireContext()
         )
     }
-    private var listener : IToCityFragment? = null
-    private lateinit var adapter7D : WeatherListAdapter
-    private lateinit var adapter24H : WeatherListAdapter
+    private var listener: IToCityFragment? = null
+    private lateinit var adapter7D: WeatherListAdapter
+    private lateinit var adapter24H: WeatherListAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -59,10 +61,12 @@ class WeatherFragment : Fragment() {
 
         weatherList24H.adapter = adapter24H
         weatherList24H.setHasFixedSize(true)
-        weatherList24H.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        weatherList24H.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         weatherList7D.adapter = adapter7D
         weatherList7D.setHasFixedSize(true)
-        weatherList7D.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        weatherList7D.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         viewModel.weather7D.observe(this.viewLifecycleOwner) {
             adapter7D.submitList(it)
@@ -70,6 +74,32 @@ class WeatherFragment : Fragment() {
 
         viewModel.weather24H.observe(this.viewLifecycleOwner) {
             adapter24H.submitList(it)
+        }
+
+        viewModel.weather.observe(this.viewLifecycleOwner) {
+            view.findViewById<TextView>(R.id.textViewHumidity).text =
+                requireContext().getString(R.string.number_percentage, it.humidity)
+
+            view.findViewById<TextView>(R.id.textViewTemperature).text =
+                requireContext().getString(R.string.number_degrees, it.temperature)
+
+            view.findViewById<ImageView>(R.id.imageViewRainState)
+                .load(requireContext().getString(R.string.load_image_big, it.rainImage))
+
+            val time = it.time % (24 * 60 * 60)
+            view.findViewById<TextView>(R.id.textViewTime).text = requireContext().getString(
+                R.string.time_string,
+                time / 3600,
+                time / 60 % 60,
+                time % 60
+            )
+            view.findViewById<ImageView>(R.id.imageViewBackground).setBackgroundColor(
+                if (time / 3600 >= 18 || time / 3600 < 6) {
+                    resources.getColor(R.color.dark_sky, null)
+                } else {
+                    resources.getColor(R.color.blue_sky, null)
+                }
+            )
         }
 
         val location = view.findViewById<LinearLayout>(R.id.locationLayout)

@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray_40">#404040</color>
     <color name="gray_20">#202020</color>
+
+    <color name="blue_sky">#3498db</color>
+    <color name="dark_sky">#1F2D3A</color>
 </resources>

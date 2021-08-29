@@ -1,8 +1,11 @@
 package com.adorastudios.weatherappavito.model
 
 data class Weather(
-    val time: String,
-    val temperature: Int,
+    val time: Int,
+    val timeString: String?,
+    val temperature: Double,
+    val temperatureAdditional: Double? = null,
+    val humidity: Int,
     val rainState: String,
-    val humidity: Double
+    val rainImage: String
 )
