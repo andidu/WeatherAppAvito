@@ -1,7 +1,9 @@
 package com.adorastudios.weatherappavito
 
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.preference.PreferenceManager
 import com.adorastudios.weatherappavito.city.CityFragment
 import com.adorastudios.weatherappavito.data.DataSource
 import com.adorastudios.weatherappavito.data.DataSourceImpl
@@ -13,12 +15,19 @@ class MainActivity : AppCompatActivity(),
     WeatherFragment.IToCityFragment,
     CityFragment.IBackFromCityFragment,
     DataSourceProvider {
+
+    companion object {
+        lateinit var sharedPreferences: SharedPreferences
+    }
+
     private lateinit var dataSource: DataSource
     private lateinit var networkModule: NetworkModule
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         networkModule = NetworkModule()
         dataSource = DataSourceImpl(networkModule.api)

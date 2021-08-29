@@ -12,9 +12,9 @@
     <string name="load_image_big">https://openweathermap.org/img/wn/%1$s@4x.png</string>
 
     <string name="humidity">Humidity</string>
-    <string name="city_name_or_zip_code">City name or ZIP code</string>
     <string name="set_city_name">Set city name</string>
     <string name="set_zip_code">Set zip code</string>
-    <string name="shared_preferences_name">name</string>
-    <string name="shared_preferences_zip">zip</string>
+    <string name="place_name">Place name</string>
+    <string name="find_place">Find place</string>
+    <string name="save">Save</string>
 </resources>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.adorastudios.weatherappavito.R
@@ -38,19 +39,31 @@ class CityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        editText = view.findViewById(R.id.editTextEnterLocation)
+        editText = view.findViewById(R.id.editTextEnterPlaceName)
 
-        val setName = view.findViewById<TextView>(R.id.textViewSetName)
-        val setZip = view.findViewById<TextView>(R.id.textViewSetZip)
+        val setNameBtn = view.findViewById<TextView>(R.id.textViewSetName)
 
-        setName.setOnClickListener {
-            viewModel.setName(editText.text.toString())
+        setNameBtn.setOnClickListener {
+            if (!viewModel.setName(editText.text.toString())) {
+                Toast.makeText(
+                    context,
+                    "Error choosing location. Try another one",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        val saveBtn = view.findViewById<TextView>(R.id.textViewSave)
+        saveBtn.setOnClickListener {
+            viewModel.save()
             listener?.backFromCityFragment()
         }
 
-        setZip.setOnClickListener {
-            viewModel.setZip(editText.text.toString())
-            listener?.backFromCityFragment()
+        viewModel.resultLatitude.observe(this.viewLifecycleOwner) {
+            view.findViewById<TextView>(R.id.textViewLatitude).text = String.format("%1$.2f", it)
+        }
+        viewModel.resultLongitude.observe(this.viewLifecycleOwner) {
+            view.findViewById<TextView>(R.id.textViewLongitude).text = String.format("%1$.2f", it)
         }
     }
 

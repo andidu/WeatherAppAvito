@@ -1,20 +1,23 @@
 package com.adorastudios.weatherappavito.data.network_module
 
+import com.adorastudios.weatherappavito.MainActivity
+import com.adorastudios.weatherappavito.location.Location.Companion.LATITUDE_STRING
+import com.adorastudios.weatherappavito.location.Location.Companion.LONGITUDE_STRING
 import okhttp3.Interceptor
 import okhttp3.Response
 
 class LocationInterceptor: Interceptor {
 
-    companion object {
-        const val LOCATION = "Moscow"
-    }
-
     override fun intercept(chain: Interceptor.Chain): Response {
+
+        val lat = MainActivity.sharedPreferences.getFloat(LATITUDE_STRING, 1000f)
+        val lon = MainActivity.sharedPreferences.getFloat(LONGITUDE_STRING, 1000f)
+
         val origin = chain.request()
         val urlBuilder = origin.url.newBuilder()
         val url = urlBuilder
-            .addQueryParameter("lat", "33.44")
-            .addQueryParameter("lon", "-94.04")
+            .addQueryParameter("lat", "" + lat)
+            .addQueryParameter("lon", "" + lon)
             .build()
 
         val requestBuilder = origin.newBuilder()
