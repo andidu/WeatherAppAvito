@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.adorastudios.weatherappavito.MainActivity
-import com.adorastudios.weatherappavito.R
 import com.adorastudios.weatherappavito.data.DataSource
 import com.adorastudios.weatherappavito.location.Location.Companion.LATITUDE_STRING
 import com.adorastudios.weatherappavito.location.Location.Companion.LONGITUDE_STRING
@@ -25,12 +24,9 @@ class WeatherViewModel(private val dataSource: DataSource, context: Context) : V
     val location : MutableLiveData<String> get() = locationString
     val weather : MutableLiveData<Weather> get() = weatherNow
 
-    init {
-        loadWeather()
-    }
-
     fun repetitiveInit() {
         loadLocation()
+        loadWeather()
     }
 
     private fun loadLocation() {
