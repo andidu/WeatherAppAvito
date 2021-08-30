@@ -2,19 +2,16 @@ package com.adorastudios.weatherappavito.city
 
 import android.content.Context
 import android.location.Geocoder
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import androidx.preference.PreferenceManager
 import androidx.lifecycle.ViewModel
 import com.adorastudios.weatherappavito.MainActivity
-import com.adorastudios.weatherappavito.R
 import com.adorastudios.weatherappavito.location.Location.Companion.LATITUDE_STRING
 import com.adorastudios.weatherappavito.location.Location.Companion.LONGITUDE_STRING
+import com.adorastudios.weatherappavito.location.Location.Companion.NAME_STRING
 
 class CityViewModel (context: Context): ViewModel() {
 
     private val geocoder = Geocoder(context)
-    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     val resultLongitude : MutableLiveData<Double> = MutableLiveData()
     val resultLatitude : MutableLiveData<Double> = MutableLiveData()
@@ -30,12 +27,13 @@ class CityViewModel (context: Context): ViewModel() {
         return true
     }
 
-    fun save() {
+    fun save(name : String) {
         val longitude = resultLongitude.value?.toFloat() ?: return
         val latitude = resultLatitude.value?.toFloat() ?: return
         MainActivity.sharedPreferences.edit()
             .putFloat(LONGITUDE_STRING, longitude)
             .putFloat(LATITUDE_STRING, latitude)
+            .putString(NAME_STRING, name)
             .apply()
     }
 }

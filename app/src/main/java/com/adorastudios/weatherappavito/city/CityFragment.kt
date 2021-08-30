@@ -55,7 +55,8 @@ class CityFragment : Fragment() {
 
         val saveBtn = view.findViewById<TextView>(R.id.textViewSave)
         saveBtn.setOnClickListener {
-            viewModel.save()
+            val name = editText.text.toString()
+            viewModel.save(name)
             listener?.backFromCityFragment()
         }
 

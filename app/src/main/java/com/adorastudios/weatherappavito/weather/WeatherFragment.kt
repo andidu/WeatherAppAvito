@@ -20,8 +20,7 @@ class WeatherFragment : Fragment() {
 
     private val viewModel: WeatherViewModel by viewModels {
         WeatherViewModelFactory(
-            (requireActivity() as DataSourceProvider).provideDataSource(),
-            requireContext()
+            (requireActivity() as DataSourceProvider).provideDataSource()
         )
     }
     private var listener: IToCityFragment? = null
@@ -51,9 +50,13 @@ class WeatherFragment : Fragment() {
         val weatherList24H = view.findViewById<RecyclerView>(R.id.recycler24Hours)
 
         viewModel.repetitiveInit()
-        viewModel.location.observe(this.viewLifecycleOwner) {
+        viewModel.locationName.observe(this.viewLifecycleOwner) {
             val text = view.findViewById<TextView>(R.id.textViewLocation)
             text.text = it
+        }
+        viewModel.locationCoordinates.observe(this.viewLifecycleOwner) {
+            val coordinates = view.findViewById<TextView>(R.id.textViewLocationCoordinates)
+            coordinates.text = it
         }
 
         adapter7D = WeatherListAdapter()
