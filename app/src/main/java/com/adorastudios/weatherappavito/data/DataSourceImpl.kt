@@ -22,9 +22,9 @@ class DataSourceImpl(private val api: WeatherApiService) : DataSource {
         val loaded = api.loadWeather()
         var offset: Int
         val weatherNow = loaded.weatherResponse.let {
-            offset = it.time / (3600 * 24)
+            offset = (it.time + loaded.timeOffset) / (3600 * 24)
             Weather(
-                it.time,
+                it.time + loaded.timeOffset,
                 null,
                 it.temperature - 273,
                 null,
@@ -34,9 +34,10 @@ class DataSourceImpl(private val api: WeatherApiService) : DataSource {
             )
         }
         val weather24 = loaded.hourlyResponses.map { response ->
+            val time = response.time + loaded.timeOffset
             Weather(
-                response.time,
-                String.format("%1$02d:%2$02d", response.time / 3600 % 24, response.time / 60 % 60),
+                time,
+                String.format("%1$02d:%2$02d", time / 3600 % 24, time / 60 % 60),
                 response.temperature - 273,
                 null,
                 response.humidity,
@@ -45,9 +46,10 @@ class DataSourceImpl(private val api: WeatherApiService) : DataSource {
             )
         }.take(24)
         val weather7 = loaded.dailyResponses.map { response ->
+            val time = response.time + loaded.timeOffset
             Weather(
-                response.time,
-                list[(response.time / (3600 * 24) - offset) % 7],
+                time,
+                list[(time / (3600 * 24) - offset) % 7],
                 response.temperature.min - 273,
                 response.temperature.max - 273,
                 response.humidity,
