@@ -104,6 +104,10 @@ class WeatherFragment : Fragment() {
             adapter24H.submitList(it)
         }
 
+        viewModel.weatherError.observe(this.viewLifecycleOwner) {
+            Toast.makeText(requireContext(), "An error occurred: " + it.message, Toast.LENGTH_LONG).show()
+        }
+
         viewModel.weather.observe(this.viewLifecycleOwner) {
             view.findViewById<TextView>(R.id.textViewHumidity).text =
                 requireContext().getString(R.string.number_percentage, it.humidity)

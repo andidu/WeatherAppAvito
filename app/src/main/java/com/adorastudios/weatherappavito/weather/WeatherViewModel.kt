@@ -5,14 +5,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adorastudios.weatherappavito.MainActivity
 import com.adorastudios.weatherappavito.data.DataSource
+import com.adorastudios.weatherappavito.data.Failure
+import com.adorastudios.weatherappavito.data.Result
+import com.adorastudios.weatherappavito.data.Success
 import com.adorastudios.weatherappavito.location.Location
 import com.adorastudios.weatherappavito.model.Weather
+import com.adorastudios.weatherappavito.model.Weather3In1
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(private val dataSource: DataSource) : ViewModel() {
     private val weather7dList: MutableLiveData<List<Weather>> = MutableLiveData()
     private val weather24hList: MutableLiveData<List<Weather>> = MutableLiveData()
     private val weatherNow: MutableLiveData<Weather> = MutableLiveData()
+    private val weatherErrorThrowable: MutableLiveData<Throwable> = MutableLiveData()
     private val locationNameString: MutableLiveData<String> = MutableLiveData()
     private val locationCoordinatesString: MutableLiveData<String> = MutableLiveData()
 
@@ -21,6 +26,7 @@ class WeatherViewModel(private val dataSource: DataSource) : ViewModel() {
     val locationName: MutableLiveData<String> get() = locationNameString
     val locationCoordinates: MutableLiveData<String> get() = locationCoordinatesString
     val weather : MutableLiveData<Weather> get() = weatherNow
+    val weatherError : MutableLiveData<Throwable> get() = weatherErrorThrowable
 
     fun repetitiveInit() :Int {
         val r = loadLocation()
@@ -66,10 +72,20 @@ class WeatherViewModel(private val dataSource: DataSource) : ViewModel() {
 
     private fun loadWeather() {
         viewModelScope.launch {
-            val l = dataSource.loadWeather()
-            weather24hList.postValue(l.hourly)
-            weather7dList.postValue(l.daily)
-            weatherNow.postValue(l.curr)
+            handleResult(dataSource.loadWeather())
+        }
+    }
+
+    private fun handleResult(result: Result<Weather3In1>) {
+        when (result) {
+            is Success -> {
+                weather24hList.postValue(result.data.hourly)
+                weather7dList.postValue(result.data.daily)
+                weatherNow.postValue(result.data.curr)
+            }
+            is Failure -> {
+                weatherErrorThrowable.postValue(result.exception)
+            }
         }
     }
 
