@@ -5,6 +5,7 @@ import android.location.Geocoder
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.adorastudios.weatherappavito.MainActivity
+import com.adorastudios.weatherappavito.location.Location.Companion.CURR_STRING
 import com.adorastudios.weatherappavito.location.Location.Companion.LATITUDE_STRING
 import com.adorastudios.weatherappavito.location.Location.Companion.LONGITUDE_STRING
 import com.adorastudios.weatherappavito.location.Location.Companion.NAME_STRING
@@ -34,6 +35,16 @@ class CityViewModel (context: Context): ViewModel() {
             .putFloat(LONGITUDE_STRING, longitude)
             .putFloat(LATITUDE_STRING, latitude)
             .putString(NAME_STRING, name)
+            .putBoolean(CURR_STRING, false)
+            .apply()
+    }
+
+    fun saveDefault() {
+        MainActivity.sharedPreferences.edit()
+            .remove(LONGITUDE_STRING)
+            .remove(LATITUDE_STRING)
+            .remove(NAME_STRING)
+            .remove(CURR_STRING)
             .apply()
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,7 +50,31 @@ class WeatherFragment : Fragment() {
         val weatherList7D = view.findViewById<RecyclerView>(R.id.recycler7Days)
         val weatherList24H = view.findViewById<RecyclerView>(R.id.recycler24Hours)
 
-        viewModel.repetitiveInit()
+        val location = view.findViewById<LinearLayout>(R.id.locationLayout)
+        location.setOnClickListener {
+            listener?.toCityFragment()
+        }
+
+        when (viewModel.repetitiveInit()) {
+            -1 -> {
+                Toast.makeText(
+                    requireContext(),
+                    "Unable to get your last location. Please choose location manually",
+                    Toast.LENGTH_LONG
+                ).show()
+                listener?.toCityFragment()
+                return
+            }
+            -2 -> {
+                Toast.makeText(
+                    requireContext(),
+                    "Error loading location. Try to change it",
+                    Toast.LENGTH_LONG
+                ).show()
+                listener?.toCityFragment()
+                return
+            }
+        }
         viewModel.locationName.observe(this.viewLifecycleOwner) {
             val text = view.findViewById<TextView>(R.id.textViewLocation)
             text.text = it
@@ -103,11 +128,6 @@ class WeatherFragment : Fragment() {
                     resources.getColor(R.color.blue_sky, null)
                 }
             )
-        }
-
-        val location = view.findViewById<LinearLayout>(R.id.locationLayout)
-        location.setOnClickListener {
-            listener?.toCityFragment()
         }
     }
 

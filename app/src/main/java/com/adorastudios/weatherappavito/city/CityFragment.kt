@@ -60,6 +60,12 @@ class CityFragment : Fragment() {
             listener?.backFromCityFragment()
         }
 
+        val currentBtn = view.findViewById<TextView>(R.id.textViewCurrent)
+        currentBtn.setOnClickListener {
+            viewModel.saveDefault()
+            listener?.backFromCityFragment()
+        }
+
         viewModel.resultLatitude.observe(this.viewLifecycleOwner) {
             view.findViewById<TextView>(R.id.textViewLatitude).text = String.format("%1$.2f", it)
         }

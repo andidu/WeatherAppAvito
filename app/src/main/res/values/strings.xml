@@ -17,4 +17,5 @@
     <string name="place_name">Place name</string>
     <string name="find_place">Find place</string>
     <string name="save">Save</string>
+    <string name="use_current_location">Use current location</string>
 </resources>
