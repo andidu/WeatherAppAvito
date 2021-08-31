@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black">
+    android:background="?attr/colorOnPrimary">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,7 +37,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/weather"
-            android:textColor="@color/white"
             android:textSize="34sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewBackground"
@@ -51,7 +50,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             tools:text="10*C"
-            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageViewBackground"
             app:layout_constraintEnd_toStartOf="@+id/guidelineLeft"
@@ -62,7 +60,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="13:34:05"
-            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/textViewTemperature"
             app:layout_constraintEnd_toStartOf="@+id/guidelineLeft" />
 
@@ -106,8 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                tools:text="10%"
-                android:textColor="@color/white" />
+                tools:text="10%" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.Guideline
@@ -134,7 +130,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/guidelineLeft"
             app:layout_constraintTop_toBottomOf="@+id/locationLayout"
@@ -169,7 +164,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:textColor="@color/white"
                 android:textStyle="bold"
                 tools:text="Moscow" />
         </LinearLayout>
@@ -180,7 +174,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/hours_24"
-            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/guidelineRight"
             app:layout_constraintTop_toBottomOf="@+id/imageViewBackground" />
@@ -202,7 +195,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/days_7"
-            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/guidelineRight"
             app:layout_constraintTop_toBottomOf="@+id/recycler24Hours" />
