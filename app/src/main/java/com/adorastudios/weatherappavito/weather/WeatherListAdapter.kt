@@ -37,7 +37,14 @@ class WeatherListAdapter :
 
         fun bind(weather: Weather) {
             time.text = weather.timeString
-            temperature.text = itemView.context.getString(R.string.number_degrees, weather.temperature)
+            if (weather.temperatureAdditional != null) {
+                temperature.text =
+                    itemView.context.getString(R.string.temperature_min_max, weather.temperature, weather.temperatureAdditional)
+                temperature.textSize = 14f
+            } else {
+                temperature.text =
+                    itemView.context.getString(R.string.number_degrees, weather.temperature)
+            }
             humidity.text = itemView.context.getString(R.string.number_percentage, weather.humidity)
             rainState.text = weather.rainState
             val imageUrl = itemView.context.getString(R.string.load_image, weather.rainImage)

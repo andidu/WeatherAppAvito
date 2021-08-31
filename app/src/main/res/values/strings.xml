@@ -7,6 +7,7 @@
 
     <string name="number_percentage">%1$1d%%</string>
     <string name="number_degrees">%1$.1f°C</string>
+    <string name="temperature_min_max">%1$.1f°C - %2$.1f°C</string>
     <string name="time_string">%1$02d:%2$02d:%3$02d</string>
     <string name="load_image">https://openweathermap.org/img/wn/%1$s@2x.png</string>
     <string name="load_image_big">https://openweathermap.org/img/wn/%1$s@4x.png</string>
