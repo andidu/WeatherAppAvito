@@ -44,12 +44,21 @@ class CityFragment : Fragment() {
         val setNameBtn = view.findViewById<TextView>(R.id.textViewSetName)
 
         setNameBtn.setOnClickListener {
-            if (!viewModel.setName(editText.text.toString())) {
-                Toast.makeText(
-                    context,
-                    "Error choosing location. Try another one",
-                    Toast.LENGTH_SHORT
-                ).show()
+            when (viewModel.setName(editText.text.toString())) {
+                1 -> {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.location_not_found_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                2 -> {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.location_another_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 
