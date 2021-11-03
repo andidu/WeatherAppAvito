@@ -12,6 +12,6 @@ Other features:
 
 Screenshoots:
 
-<img src="https://user-images.githubusercontent.com/61622486/131520675-99fdd06f-a4eb-474f-bd65-1fa1fc0e73ed.png" width="200"> <img src="https://user-images.githubusercontent.com/61622486/131520885-da8ad975-50d0-441b-a865-853ec9c70547.png" width="200"> <img src="https://user-images.githubusercontent.com/61622486/131520873-9792ceec-52fa-40a8-abec-82880d32e193.png" width="200">
+<img src="https://user-images.githubusercontent.com/61622486/131538899-578fe9de-ad0b-4008-bbff-c24d1b21e3d2.png" width="200"> <img src="https://user-images.githubusercontent.com/61622486/131520885-da8ad975-50d0-441b-a865-853ec9c70547.png" width="200"> <img src="https://user-images.githubusercontent.com/61622486/131538694-528a5821-32e8-4f60-9d1a-874d7606aa92.png" width="200">
 
-<img src="https://user-images.githubusercontent.com/61622486/131520878-7781bd20-dca4-417c-90ff-51fb74ddd28c.png" width="200"> <img src="https://user-images.githubusercontent.com/61622486/131520883-15ebf5b1-87ca-4dd3-88b7-d6abce8d0363.png" width="200"> <img src="https://user-images.githubusercontent.com/61622486/131520881-55185543-b85a-4a68-9a3c-72fca8f12484.png" width="200">
+<img src="https://user-images.githubusercontent.com/61622486/131539549-37e0d98b-6295-430a-945a-3db63d0d3195.png" width="200"> <img src="https://user-images.githubusercontent.com/61622486/131539561-20dbf45f-e566-4342-8c25-8be2db8aea36.png" width="200"> <img src="https://user-images.githubusercontent.com/61622486/131539558-0bd0772f-f338-4a73-86fd-e6e9bbc175b8.png" width="200">
