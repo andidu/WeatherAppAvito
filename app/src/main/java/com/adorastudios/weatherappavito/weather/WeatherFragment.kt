@@ -29,6 +29,8 @@ class WeatherFragment : Fragment() {
     private lateinit var adapter7D: WeatherListAdapter
     private lateinit var adapter24H: WeatherListAdapter
 
+    private var toast: Toast? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -58,20 +60,12 @@ class WeatherFragment : Fragment() {
 
         when (viewModel.repetitiveInit()) {
             WeatherViewModel.LOADING_RESPONSE_ERROR_CURRENT_LOCATION -> {
-                Toast.makeText(
-                    requireContext(),
-                    "Unable to get your last location. Please choose location manually",
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast(getString(R.string.loading_response_error_current_location))
                 listener?.toCityFragment()
                 return
             }
             WeatherViewModel.LOADING_RESPONSE_ERROR_SELECTED_LOCATION -> {
-                Toast.makeText(
-                    requireContext(),
-                    "Error loading location. Try to change it",
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast(getString(R.string.loading_response_error_selected_location))
                 listener?.toCityFragment()
                 return
             }
@@ -107,7 +101,7 @@ class WeatherFragment : Fragment() {
         viewModel.weatherResponse.observe(this.viewLifecycleOwner) {
             when (it) {
                 is WeatherResponseState.WeatherError -> {
-                    Toast.makeText(requireContext(), getString(R.string.error_occurred, it.error.message), Toast.LENGTH_LONG).show()
+                    showToast(getString(R.string.error_occurred, it.error.message))
                 }
                 is WeatherResponseState.WeatherOK -> {
                     adapter7D.submitList(it.weather7d)
@@ -116,6 +110,16 @@ class WeatherFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showToast(message: String) {
+        toast?.cancel()
+        toast = Toast.makeText(
+            context,
+            message,
+            Toast.LENGTH_SHORT
+        )
+        toast?.show()
     }
 
     private fun showCurrentWeather(view: View, it: Weather) {

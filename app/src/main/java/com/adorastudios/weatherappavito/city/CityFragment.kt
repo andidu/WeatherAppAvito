@@ -19,6 +19,7 @@ class CityFragment : Fragment() {
         CityViewModelFactory(requireContext())
     }
     private lateinit var editText: EditText
+    private var toast: Toast? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,18 +47,10 @@ class CityFragment : Fragment() {
         setNameBtn.setOnClickListener {
             when (viewModel.setName(editText.text.toString())) {
                 1 -> {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.location_not_found_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast(getString(R.string.location_not_found_error))
                 }
                 2 -> {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.location_another_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast(getString(R.string.location_another_error), long = true)
                 }
             }
         }
@@ -81,6 +74,16 @@ class CityFragment : Fragment() {
         viewModel.resultLongitude.observe(this.viewLifecycleOwner) {
             view.findViewById<TextView>(R.id.textViewLongitude).text = String.format("%1$.2f", it)
         }
+    }
+
+    private fun showToast(message: String, long: Boolean = true) {
+        toast?.cancel()
+        toast = Toast.makeText(
+            context,
+            message,
+            if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
+        )
+        toast?.show()
     }
 
     override fun onDetach() {

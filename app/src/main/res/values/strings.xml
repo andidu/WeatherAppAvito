@@ -22,6 +22,8 @@
     <string name="find_place">Find place</string>
     <string name="save">Save</string>
     <string name="use_current_location">Use current location</string>
-    <string name="location_not_found_error">Error choosing location. Try another one</string>
-    <string name="location_another_error">System is unable to find requested location. Check your internet connection</string>
+    <string name="location_not_found_error">Error finding location. Try another one</string>
+    <string name="location_another_error">System was unable to find requested location. Check your internet connection or choose another location</string>
+    <string name="loading_response_error_current_location">Unable to get your last location. Please choose location manually</string>
+    <string name="loading_response_error_selected_location">Error loading location. Try to change it</string>
 </resources>
