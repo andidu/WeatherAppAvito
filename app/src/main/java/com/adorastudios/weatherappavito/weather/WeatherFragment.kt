@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.adorastudios.weatherappavito.R
 import com.adorastudios.weatherappavito.data.DataSourceProvider
+import com.adorastudios.weatherappavito.model.Weather
 
 class WeatherFragment : Fragment() {
 
@@ -56,7 +57,7 @@ class WeatherFragment : Fragment() {
         }
 
         when (viewModel.repetitiveInit()) {
-            -1 -> {
+            WeatherViewModel.LOADING_RESPONSE_ERROR_CURRENT_LOCATION -> {
                 Toast.makeText(
                     requireContext(),
                     "Unable to get your last location. Please choose location manually",
@@ -65,7 +66,7 @@ class WeatherFragment : Fragment() {
                 listener?.toCityFragment()
                 return
             }
-            -2 -> {
+            WeatherViewModel.LOADING_RESPONSE_ERROR_SELECTED_LOCATION -> {
                 Toast.makeText(
                     requireContext(),
                     "Error loading location. Try to change it",
@@ -75,13 +76,20 @@ class WeatherFragment : Fragment() {
                 return
             }
         }
-        viewModel.locationName.observe(this.viewLifecycleOwner) {
+
+        viewModel.location.observe(this.viewLifecycleOwner) {
             val text = view.findViewById<TextView>(R.id.textViewLocation)
-            text.text = it
-        }
-        viewModel.locationCoordinates.observe(this.viewLifecycleOwner) {
             val coordinates = view.findViewById<TextView>(R.id.textViewLocationCoordinates)
-            coordinates.text = it
+            when (it) {
+                LocationResponseState.LocationError -> {
+                    text.text = requireContext().getString(R.string.error)
+                    coordinates.text = ""
+                }
+                is LocationResponseState.LocationOK -> {
+                    text.text = it.name
+                    coordinates.text = String.format("[%1$.2fx%2$.2f]", it.latitude, it.longitude)
+                }
+            }
         }
 
         adapter7D = WeatherListAdapter()
@@ -96,43 +104,44 @@ class WeatherFragment : Fragment() {
         weatherList7D.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        viewModel.weather7D.observe(this.viewLifecycleOwner) {
-            adapter7D.submitList(it)
-        }
-
-        viewModel.weather24H.observe(this.viewLifecycleOwner) {
-            adapter24H.submitList(it)
-        }
-
-        viewModel.weatherError.observe(this.viewLifecycleOwner) {
-            Toast.makeText(requireContext(), "An error occurred: " + it.message, Toast.LENGTH_LONG).show()
-        }
-
-        viewModel.weather.observe(this.viewLifecycleOwner) {
-            view.findViewById<TextView>(R.id.textViewHumidity).text =
-                requireContext().getString(R.string.number_percentage, it.humidity)
-
-            view.findViewById<TextView>(R.id.textViewTemperature).text =
-                requireContext().getString(R.string.number_degrees, it.temperature)
-
-            view.findViewById<ImageView>(R.id.imageViewRainState)
-                .load(requireContext().getString(R.string.load_image_big, it.rainImage))
-
-            val time = it.time % (24 * 60 * 60)
-            view.findViewById<TextView>(R.id.textViewTime).text = requireContext().getString(
-                R.string.time_string,
-                time / 3600,
-                time / 60 % 60,
-                time % 60
-            )
-            view.findViewById<ImageView>(R.id.imageViewBackground).setBackgroundColor(
-                if (time / 3600 >= 18 || time / 3600 < 6) {
-                    resources.getColor(R.color.dark_sky, null)
-                } else {
-                    resources.getColor(R.color.blue_sky, null)
+        viewModel.weatherResponse.observe(this.viewLifecycleOwner) {
+            when (it) {
+                is WeatherResponseState.WeatherError -> {
+                    Toast.makeText(requireContext(), getString(R.string.error_occurred, it.error.message), Toast.LENGTH_LONG).show()
                 }
-            )
+                is WeatherResponseState.WeatherOK -> {
+                    adapter7D.submitList(it.weather7d)
+                    adapter24H.submitList(it.weather24h)
+                    showCurrentWeather(view, it.weatherNow)
+                }
+            }
         }
+    }
+
+    private fun showCurrentWeather(view: View, it: Weather) {
+        view.findViewById<TextView>(R.id.textViewHumidity).text =
+            requireContext().getString(R.string.number_percentage, it.humidity)
+
+        view.findViewById<TextView>(R.id.textViewTemperature).text =
+            requireContext().getString(R.string.number_degrees, it.temperature)
+
+        view.findViewById<ImageView>(R.id.imageViewRainState)
+            .load(requireContext().getString(R.string.load_image_big, it.rainImage))
+
+        val time = it.time % (24 * 60 * 60)
+        view.findViewById<TextView>(R.id.textViewTime).text = requireContext().getString(
+            R.string.time_string,
+            time / 3600,
+            time / 60 % 60,
+            time % 60
+        )
+        view.findViewById<ImageView>(R.id.imageViewBackground).setBackgroundColor(
+            if (time / 3600 >= 18 || time / 3600 < 6) {
+                resources.getColor(R.color.dark_sky, null)
+            } else {
+                resources.getColor(R.color.blue_sky, null)
+            }
+        )
     }
 
     override fun onDetach() {
